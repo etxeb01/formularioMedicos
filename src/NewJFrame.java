@@ -1,4 +1,7 @@
 
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -20,6 +23,12 @@ public class NewJFrame extends javax.swing.JFrame {
     
     ArrayList<Medico> medicos = new ArrayList();
     
+    private final String dataBase = "hospital";
+    private final String user = "root";
+    private final String password = "1234";
+    private final String URL = "jdbc:mysql://localhost:3306/"+dataBase+"?autoReconnect=true&useSSL=false";
+    
+    private Connection con = null;
     
     public NewJFrame() {
         initComponents();
@@ -47,6 +56,7 @@ public class NewJFrame extends javax.swing.JFrame {
         botonEliminar = new javax.swing.JButton();
         botonBuscar = new javax.swing.JButton();
         botonLimpiar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -112,20 +122,15 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Actualizar");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(botonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(botonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -138,8 +143,17 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(campoEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(campoApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(campoRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(26, 26, 26)
+                            .addComponent(campoRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(botonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(botonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 12, Short.MAX_VALUE)))
                 .addComponent(botonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
@@ -167,7 +181,8 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(botonAgregar)
                     .addComponent(botonEliminar)
                     .addComponent(botonBuscar)
-                    .addComponent(botonLimpiar))
+                    .addComponent(botonLimpiar)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -229,52 +244,115 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_botonLimpiarActionPerformed
 
     private void botonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarActionPerformed
-        String nombre, apellido, especialidad, reg;
-        int registro;
 
-        nombre = campoNombre.getText();
-        apellido = campoApellido.getText();
-        especialidad = campoEspecialidad.getText();
-        registro = Integer.parseInt(campoRegistro.getText());
-
-        if (!"".equals(nombre) && !"".equals(apellido) && !"".equals(especialidad)) {
-            Medico medico = new Medico(nombre, apellido, especialidad, registro);
-            medicos.add(medico);
-            limpiar();
-
-            cargarDatosTabla();
-        }
+        Connection conexion = null;
+        PreparedStatement ps;
         
-        else{
-            JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
+        try{
+            
+            conexion = getConexion();
+            ps = (PreparedStatement) conexion.prepareStatement("INSERT INTO medicos VALUES (?,?,?,?)");
+            ps.setString(1, campoRegistro.getText());
+            ps.setString(2, campoNombre.getText());
+            ps.setString(3, campoApellido.getText());
+            ps.setString(4, campoEspecialidad.getText());
+            
+            int result = ps.executeUpdate();
+            
+            if(result>0){
+                JOptionPane.showMessageDialog(null, "Registro insertado correctamente");
+                limpiar();
+            }
+            
+            else{
+                JOptionPane.showMessageDialog(null, "Registro no insertado");  
+            }
+            
+            conexion.close();
         }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Error "+ex);
+        }
+
+
+
+//        String nombre, apellido, especialidad, reg;
+//        int registro;
+//
+//        nombre = campoNombre.getText();
+//        apellido = campoApellido.getText();
+//        especialidad = campoEspecialidad.getText();
+//        registro = Integer.parseInt(campoRegistro.getText());
+//
+//        if (!"".equals(nombre) && !"".equals(apellido) && !"".equals(especialidad)) {
+//            Medico medico = new Medico(nombre, apellido, especialidad, registro);
+//            medicos.add(medico);
+//            limpiar();
+//
+//            cargarDatosTabla();
+//        }
+//        
+//        else{
+//            JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
+//        }
         
     }//GEN-LAST:event_botonAgregarActionPerformed
 
     private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
        
-        int nRegistro, indice=-1;
-        nRegistro = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el registro del medico a eliminar "));
+        Connection conexion = null;
+        PreparedStatement ps;
         
-        for (int i = 0; i < medicos.size(); i++) {
+        try{
             
-            if(medicos.get(i).getNumeroRegistro()== nRegistro){
-                indice = i;
+            conexion = getConexion();
+            ps = (PreparedStatement) conexion.prepareStatement("DELETE FROM medicos WHERE NumRegistro=?");
+            ps.setString(1, JOptionPane.showInputDialog("Ingrese el numero de registro a eliminar"));
+            
+            
+            int result = ps.executeUpdate();
+            
+            if(result>0){
+                JOptionPane.showMessageDialog(null, "Registro eliminado de manera exitosa");
+                limpiar();
             }
             
-        }
-        
-        if( indice !=-1){
-            JOptionPane.showMessageDialog(null, medicos.get(indice).toString()+" \n Eliminado");
-            System.out.println(indice);
-            medicos.remove(indice);
+            else{
+                JOptionPane.showMessageDialog(null, "Registro no eliminado");  
+            }
             
+            conexion.close();
         }
-        else{
-            JOptionPane.showMessageDialog(null, "Registro no encontrado");
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Error "+ex);
         }
         
-        cargarDatosTabla();
+        
+        
+        
+        
+//        int nRegistro, indice=-1;
+//        nRegistro = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el registro del medico a eliminar "));
+//        
+//        for (int i = 0; i < medicos.size(); i++) {
+//            
+//            if(medicos.get(i).getNumeroRegistro()== nRegistro){
+//                indice = i;
+//            }
+//            
+//        }
+//        
+//        if( indice !=-1){
+//            JOptionPane.showMessageDialog(null, medicos.get(indice).toString()+" \n Eliminado");
+//            System.out.println(indice);
+//            medicos.remove(indice);
+//            
+//        }
+//        else{
+//            JOptionPane.showMessageDialog(null, "Registro no encontrado");
+//        }
+//        
+//        cargarDatosTabla();
     }//GEN-LAST:event_botonEliminarActionPerformed
 
     
@@ -342,6 +420,25 @@ public class NewJFrame extends javax.swing.JFrame {
         campoRegistro.setText("");
     }
     
+    
+    public Connection getConexion(){
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = (Connection) DriverManager.getConnection(URL,user,password);
+            
+            // JOptionPane.showMessageDialog(null, "conexion exitosa");
+        } catch (Exception ex) {
+        
+        JOptionPane.showMessageDialog(null,"Error "+ex);
+        
+        }
+        
+        
+        
+        return con;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -386,6 +483,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField campoEspecialidad;
     private javax.swing.JTextField campoNombre;
     private javax.swing.JTextField campoRegistro;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
