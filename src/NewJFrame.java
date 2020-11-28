@@ -5,8 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -41,6 +39,7 @@ public class NewJFrame extends javax.swing.JFrame {
         initComponents();
         cargarTabla();
         setLocationRelativeTo(null); // Centrar Ventana
+        radioBotonTodos.setSelected(true);
     }
 
     /**
@@ -52,6 +51,7 @@ public class NewJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -61,13 +61,18 @@ public class NewJFrame extends javax.swing.JFrame {
         campoEspecialidad = new javax.swing.JTextField();
         campoNombre = new javax.swing.JTextField();
         campoRegistro = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
         botonAgregar = new javax.swing.JButton();
         botonEliminar = new javax.swing.JButton();
-        botonBuscar = new javax.swing.JButton();
-        botonLimpiar = new javax.swing.JButton();
         botonActualizar = new javax.swing.JButton();
+        botonLimpiar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaMedicos = new javax.swing.JTable();
+        BotonBuscar = new javax.swing.JButton();
+        campoBuscar = new javax.swing.JTextField();
+        radioBotonRegistro = new javax.swing.JRadioButton();
+        radioBotonEspecialidad = new javax.swing.JRadioButton();
+        radioBotonTodos = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,18 +95,10 @@ public class NewJFrame extends javax.swing.JFrame {
         campoEspecialidad.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
 
         campoNombre.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        campoNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoNombreActionPerformed(evt);
-            }
-        });
 
         campoRegistro.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        campoRegistro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoRegistroActionPerformed(evt);
-            }
-        });
+
+        jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
         botonAgregar.setText("Agregar");
         botonAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -109,6 +106,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 botonAgregarActionPerformed(evt);
             }
         });
+        jPanel3.add(botonAgregar);
 
         botonEliminar.setText("Eliminar");
         botonEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -116,15 +114,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 botonEliminarActionPerformed(evt);
             }
         });
-
-        botonBuscar.setText("Buscar");
-
-        botonLimpiar.setText("Limpiar");
-        botonLimpiar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonLimpiarActionPerformed(evt);
-            }
-        });
+        jPanel3.add(botonEliminar);
 
         botonActualizar.setText("Actualizar");
         botonActualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -132,13 +122,22 @@ public class NewJFrame extends javax.swing.JFrame {
                 botonActualizarActionPerformed(evt);
             }
         });
+        jPanel3.add(botonActualizar);
+
+        botonLimpiar.setText("Limpiar");
+        botonLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonLimpiarActionPerformed(evt);
+            }
+        });
+        jPanel3.add(botonLimpiar);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(134, 134, 134)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -151,23 +150,13 @@ public class NewJFrame extends javax.swing.JFrame {
                     .addComponent(campoApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(126, 126, 126))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(botonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(botonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botonActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(botonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(botonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(163, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(66, 66, 66)
+                .addContainerGap(80, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -183,14 +172,9 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonAgregar)
-                    .addComponent(botonEliminar)
-                    .addComponent(botonBuscar)
-                    .addComponent(botonLimpiar)
-                    .addComponent(botonActualizar))
-                .addContainerGap())
+                .addGap(77, 77, 77)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         tablaMedicos.setModel(new javax.swing.table.DefaultTableModel(
@@ -216,6 +200,22 @@ public class NewJFrame extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaMedicos);
 
+        BotonBuscar.setText("Buscar");
+        BotonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonBuscarActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(radioBotonRegistro);
+        radioBotonRegistro.setText("Registro");
+
+        buttonGroup1.add(radioBotonEspecialidad);
+        radioBotonEspecialidad.setText("Especialidad");
+
+        buttonGroup1.add(radioBotonTodos);
+        radioBotonTodos.setText("Todos");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -224,38 +224,51 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(radioBotonTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(radioBotonRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(radioBotonEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(campoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BotonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(53, 53, 53)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(radioBotonRegistro)
+                            .addComponent(radioBotonEspecialidad)
+                            .addComponent(radioBotonTodos))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(campoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BotonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void campoNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoNombreActionPerformed
-
-    private void campoRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoRegistroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoRegistroActionPerformed
-
     private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
-
               limpiar();  
     }//GEN-LAST:event_botonLimpiarActionPerformed
 
     private void botonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarActionPerformed
 
-        Connection conexion = null;
+        Connection conexion;
         PreparedStatement ps;
         
         try{
@@ -281,7 +294,7 @@ public class NewJFrame extends javax.swing.JFrame {
             
             conexion.close();
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error "+ex);
         }
         
@@ -289,7 +302,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void botonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarActionPerformed
        
-        Connection conexion = null;
+        Connection conexion;
         PreparedStatement ps;
         
         try{
@@ -303,6 +316,7 @@ public class NewJFrame extends javax.swing.JFrame {
             
             if(result>0){
                 JOptionPane.showMessageDialog(null, "Registro eliminado de manera exitosa");
+                cargarTabla();
                 limpiar();
             }
             
@@ -312,41 +326,12 @@ public class NewJFrame extends javax.swing.JFrame {
             
             conexion.close();
         }
-        catch(Exception ex){
+        catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error "+ex);
         }
-        
-        
-        
-        
-        
-//        int nRegistro, indice=-1;
-//        nRegistro = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el registro del medico a eliminar "));
-//        
-//        for (int i = 0; i < medicos.size(); i++) {
-//            
-//            if(medicos.get(i).getNumeroRegistro()== nRegistro){
-//                indice = i;
-//            }
-//            
-//        }
-//        
-//        if( indice !=-1){
-//            JOptionPane.showMessageDialog(null, medicos.get(indice).toString()+" \n Eliminado");
-//            System.out.println(indice);
-//            medicos.remove(indice);
-//            
-//        }
-//        else{
-//            JOptionPane.showMessageDialog(null, "Registro no encontrado");
-//        }
-//        
-//        cargarDatosTabla();
+    
     }//GEN-LAST:event_botonEliminarActionPerformed
 
-    
-      
-    
     public void cargarTabla(){
         
         DefaultTableModel modeloTabla = new DefaultTableModel();
@@ -359,8 +344,8 @@ public class NewJFrame extends javax.swing.JFrame {
         
         
         
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+        PreparedStatement ps;
+        ResultSet rs;
         
         
         try{
@@ -396,12 +381,11 @@ public class NewJFrame extends javax.swing.JFrame {
            Connection conexion = getConexion();
            
             try {
-                PreparedStatement ps = (PreparedStatement) conexion.prepareStatement("UPDATE Medicos set numRegistro=?, Nombre=?,Apellido=?, Especialidad =? Where NumRegistro ="+registro);
+                PreparedStatement ps = (PreparedStatement) conexion.prepareStatement("UPDATE Medicos set numRegistro=?, Nombre=?,Apellido=?, Especialidad =? WHERE NumRegistro ="+registro);
                 ps.setString(1,campoRegistro.getText());
                 ps.setString(2, campoNombre.getText());
                 ps.setString(3, campoApellido.getText());
                 ps.setString(4, campoEspecialidad.getText());
-                
                 
                 int result = ps.executeUpdate();
                 
@@ -413,6 +397,8 @@ public class NewJFrame extends javax.swing.JFrame {
                 else{
                     JOptionPane.showMessageDialog(null, "Registro no modificado");
                 }
+                
+                conexion.close();
             
             } catch (SQLException ex) {
                 
@@ -424,7 +410,7 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_botonActualizarActionPerformed
 
     private void tablaMedicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMedicosMouseClicked
-        ResultSet rs = null;
+        ResultSet rs;
 
         if (tablaMedicos.getSelectedRow() >= 0) {
 
@@ -441,10 +427,12 @@ public class NewJFrame extends javax.swing.JFrame {
                     campoEspecialidad.setText(rs.getString("Especialidad"));
                     campoRegistro.setText(rs.getString("NumRegistro"));
                 }
-
+               conexion.close();     
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Error " + ex);
             }
+            
+            
         } else {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un registro de la tabla");
 
@@ -452,39 +440,54 @@ public class NewJFrame extends javax.swing.JFrame {
        
     }//GEN-LAST:event_tablaMedicosMouseClicked
 
-    public void cargarDatosTabla(){
+    private void BotonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonBuscarActionPerformed
+        String query="";
         
-        String array[][] = null;
-
-        if (medicos.size() >= 1) {
-            array = new String[medicos.size()][4];
-            for (int i = 0; i < medicos.size(); i++) {
-
-                array[i][0] = medicos.get(i).getNombre();
-                array[i][1] = medicos.get(i).getApellido();
-                array[i][2] = medicos.get(i).getEspecialidad();
-                array[i][3] = String.valueOf(medicos.get(i).getNumeroRegistro());
-
-                tablaMedicos.setModel(new javax.swing.table.DefaultTableModel(
-                        array,
-                        new String[]{
-                            "Nombre", "Apellido", "Especialidad", "Registro"
-                        }
-                ));
-
-            }
-
-        } else {
-            tablaMedicos.setModel(new javax.swing.table.DefaultTableModel(
-                    array,
-                    new String[]{
-                        "Nombre", "Apellido", "Especialidad", "Registro"
-                    }
-            ));
+        if(radioBotonTodos.isSelected()){
+            query="SELECT* FROM Medicos";
         }
+        
+        if(radioBotonRegistro.isSelected()){
+            query ="SELECT* FROM Medicos WHERE NumRegistro="+campoBuscar.getText();
+        }
+        
+         if(radioBotonEspecialidad.isSelected()){
+            query ="SELECT* FROM Medicos WHERE Especialidad LIKE '%"+campoBuscar.getText()+"%'";
+        }
+        
+        DefaultTableModel modeloTabla = new DefaultTableModel();
+        tablaMedicos.setModel(modeloTabla);
+        
+        modeloTabla.addColumn("Registro");
+        modeloTabla.addColumn("Nombre");
+        modeloTabla.addColumn("Apellido");
+        modeloTabla.addColumn("Especialidad");
+        
+        PreparedStatement ps;
+        ResultSet rs;
+        
+        
+        try{
+            Connection con = getConexion();
+            
+            ps = (PreparedStatement) con.prepareStatement(query);
+            rs = ps.executeQuery();
+            
+            while(rs.next()){
+                
+                Object fila[] = new Object[4];
+                for (int i = 0; i <4; i++) {
+                  fila[i]=rs.getObject(i+1);
+                }
+                modeloTabla.addRow(fila);
+            }
+            
+        }
+        catch(SQLException e){
+            System.err.println("Error "+e);
+        }
+    }//GEN-LAST:event_BotonBuscarActionPerformed
 
-    }
-    
     public void limpiar(){
         campoNombre.setText("");
         campoApellido.setText("");
@@ -497,17 +500,15 @@ public class NewJFrame extends javax.swing.JFrame {
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = (Connection) DriverManager.getConnection(URL,user,password);
-            
+            con = (Connection) DriverManager.getConnection(URL, user, password);
+
             // JOptionPane.showMessageDialog(null, "conexion exitosa");
         } catch (Exception ex) {
-        
-        JOptionPane.showMessageDialog(null,"Error "+ex);
-        
+
+            JOptionPane.showMessageDialog(null, "Error " + ex);
+
         }
-        
-        
-        
+
         return con;
     }
     
@@ -547,12 +548,14 @@ public class NewJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BotonBuscar;
     private javax.swing.JButton botonActualizar;
     private javax.swing.JButton botonAgregar;
-    private javax.swing.JButton botonBuscar;
     private javax.swing.JButton botonEliminar;
     private javax.swing.JButton botonLimpiar;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField campoApellido;
+    private javax.swing.JTextField campoBuscar;
     private javax.swing.JTextField campoEspecialidad;
     private javax.swing.JTextField campoNombre;
     private javax.swing.JTextField campoRegistro;
@@ -561,7 +564,11 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton radioBotonEspecialidad;
+    private javax.swing.JRadioButton radioBotonRegistro;
+    private javax.swing.JRadioButton radioBotonTodos;
     private javax.swing.JTable tablaMedicos;
     // End of variables declaration//GEN-END:variables
 }
